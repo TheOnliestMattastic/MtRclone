@@ -6,14 +6,15 @@ A cloud drive automounting bash script using `rclone`.
 
 ## How to Run It
 
-Ensure the script is executable, then execute it.
+Ensure the script is executable, then execute it:
 
 ```bash
 git clone https://github.com/TheOnliestMattastic/MtRclone.git
 cd MtRclone
-chmod +x MtRclone.sh
-./MtRclone.sh
+chmod +x rmount.sh
+./rmount.sh
 ```
+
 > Select `y` when prompted to  automatically hand execution off to systemd management.
 
 One regestered, the entire mounting lifecycle is controlled via standard systemd user-space flags:
