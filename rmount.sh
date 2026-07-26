@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # --- Config ---
-readonly REMOTES=("Dropbox")
+readonly REMOTES=("dropbox")
 readonly MOUNT_BASE_DIR="${HOME}"
 readonly SERVICE_DIR="${HOME}/.config/systemd/user"
 readonly SERVICE_FILE="${SERVICE_DIR}/MtRclone.service"
@@ -14,7 +14,7 @@ log() {
 }
 
 bootstrap_systemd() {
-  if [ "${INVOCATION_ID:-}" != "" ] || [ "${SYSTEMD_EXEC_PID:-}" != "" ]; then
+  if [[ "$(ps -o comm= -p "$PPID" 2>/dev/null)" == "systemd" ]]; then
     return 0
   fi
 
@@ -48,15 +48,20 @@ EOF
     systemctl --user enable MtRclone.service
 
     log "Service permanently registered! It will run automatically on login."
-    log "To start it immediately via systemd, run: systemctl --user start MtRclone.service"
 
     # ask user for immediate execution
-    read -r -p "Would you like to hand execution off to systemd right now? (y/N): " response
+    local response=""
+    if [ -t 0 ]; then
+      read -r -p "Would you like to hand execution off to systemd right now? (y/N): " response || true
+    fi
+
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
       log "Handing off to systemd. Exiting current script instance..."
       systemctl --user start MtRclone.service
       exit 0
     fi
+  else
+    log "Service file already exists at ${SERVICE_FILE}. Skipping generation."
   fi
 }
 
