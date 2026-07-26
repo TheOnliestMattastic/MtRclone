@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # --- Config ---
-readonly REMOTES=("Dropbox" "GoogleDrive" "OneDrive")
+readonly REMOTES=("Dropbox")
 readonly MOUNT_BASE_DIR="${HOME}"
 readonly SERVICE_DIR="${HOME}/.config/systemd/user"
 readonly SERVICE_FILE="${SERVICE_DIR}/MtRclone.service"
